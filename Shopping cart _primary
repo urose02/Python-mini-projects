@@ -1,19 +1,39 @@
-foods=[]
-prices=[]
-total=0
-while True:
-    food=input("Enter a food to buy (q to quit): ")
-    if food.lower() =="q":
-        break
-    else:
-        price=int(input((f"Enter the price of a {food}:$")))
-        foods.append(food)
-        prices.append(price)
-print("----YOUR CART ----")
-for food in foods:
-    print(food,end=" ")
+class ShoppingCart:
+    def __init__(self):
+        self.foods = []
+        self.prices = []
+        self.total = 0
 
-for price in prices:
-    total=total+price
+    def add_item(self, food, price):
+        self.foods.append(food)
+        self.prices.append(price)
+        self.total += price
 
-print(f"Your total :${total}")
+    def display_cart(self):
+        print("---- YOUR CART ----")
+        for food, price in zip(self.foods, self.prices):
+            print(f"{food}: ${price}")
+        print(f"Total: ${self.total}")
+
+def main():
+    shopping_cart = ShoppingCart()
+
+    while True:
+        food = input("Enter a food to buy (q to quit): ")
+        if food.lower() == "q":
+            break
+        else:
+            try:
+                price = float(input(f"Enter the price of {food} as mentioned by the seller: $"))
+                if price < 0:
+                    print("Price cannot be negative. Please enter a valid price.")
+                    continue
+                shopping_cart.add_item(food, price)
+            except ValueError:
+                print("Invalid price. Please enter a numeric value.")
+
+    shopping_cart.display_cart()
+
+if __name__ == "__main__":
+    main()
+
